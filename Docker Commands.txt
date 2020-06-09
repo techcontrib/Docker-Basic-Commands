@@ -1,0 +1,467 @@
+# Docker Commands
+
+# Check the Docker Server/Client version
+
+        😿  root@~ [19:06:48]=> docker version
+            Client: Docker Engine - Community
+            Version:           19.03.7
+            API version:       1.39 (downgraded from 1.40)
+            Go version:        go1.12.17
+            Git commit:        7141c199a2
+            Built:             Wed Mar  4 01:24:10 2020
+            OS/Arch:           linux/amd64
+            Experimental:      false
+
+            Server: Docker Engine - Community
+            Engine:
+            Version:          18.09.1
+            API version:      1.39 (minimum version 1.12)
+            Go version:       go1.10.6
+            Git commit:       4c52b90
+            Built:            Wed Jan  9 19:06:30 2019
+            OS/Arch:          linux/amd64
+            Experimental:     false
+
+# Check Docker Engine Information
+
+        😿  root@~ [19:06:53]=> docker info
+            Client:
+            Debug Mode: false
+
+            Server:
+            Containers: 11  >>>>>> Shows #of total containers (includes shutdown)
+            Running: 4      >>>>>> Shows #of running containers
+            Paused: 0
+            Stopped: 7
+            Images: 7       >>>>>> Shows #of Images locally available on Docker Host
+            Server Version: 18.09.1     >>>>>> Docker Engine version
+            Storage Driver: overlay2    >>>>>>  Storage Driver.  (supported: aufs, overlay2, devicemapper, btrfs and zfs )
+            Backing Filesystem: xfs
+            Supports d_type: true
+            Native Overlay Diff: true
+            Logging Driver: json-file
+            Cgroup Driver: cgroupfs
+            Plugins:
+            Volume: local 
+            Network: bridge host macvlan null overlay   >>>>>> Default is always bridge!
+            Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog     >>>>> Default is json-file
+            Swarm: inactive
+            Runtimes: runc
+            Default Runtime: runc
+            Init Binary: docker-init
+            containerd version: c4446665cb9c30056f4998ed953e6d4ff22c7c39
+            runc version: 4fc53a81fb7c994640722ac585fa9ca548971871
+            init version: fec3683
+            Security Options:
+            seccomp
+            Profile: default
+            Kernel Version: 4.18.0-80.4.2.el8_0.x86_64
+            Operating System: Red Hat Enterprise Linux 8.0 (Ootpa)
+            OSType: linux
+            Architecture: x86_64
+            CPUs: 1
+            Total Memory: 819.9MiB
+            Name: ip-172-31-44-215.us-east-2.compute.internal
+            ID: EV4F:GATK:4QAD:DTMN:4SVT:BGFZ:FWRH:2ZFM:MYLL:3623:MDLU:JQJG
+            Docker Root Dir: /var/lib/docker
+            Debug Mode: false
+            Username: nileshjoshi1983
+            Registry: https://index.docker.io/v1/
+            Labels:
+            Experimental: false
+            Insecure Registries:
+            127.0.0.0/8
+            Live Restore Enabled: false
+            Product License: Community Engine
+
+##########  Images Related Commands
+
+# Pull Docker image from Internet (Default image registry is @ hub.docker.com)
+        😺  root@~ [17:44:19]=> docker pull hello-world
+            Using default tag: latest
+            latest: Pulling from library/hello-world
+            0e03bdcc26d7: Pull complete
+            Digest: sha256:6a65f928fb91fcfbc963f7aa6d57c8eeb426ad9a20c7ee045538ef34847f44f1
+            Status: Downloaded newer image for hello-world:latest
+            docker.io/library/hello-world:latest
+
+        😺  root@~ [17:50:50]=> docker pull ubuntu:14.04    >>>>> Pull by specific tag
+            14.04: Pulling from library/ubuntu
+            2e6e20c8e2e6: Pull complete
+            30bb187ac3fc: Pull complete
+            b7a5bcc4a58a: Pull complete
+            Digest: sha256:ffc76f71dd8be8c9e222d420dc96901a07b61616689a44c7b3ef6a10b7213de4
+            Status: Downloaded newer image for ubuntu:14.04
+            docker.io/library/ubuntu:14.04
+
+
+# List the available images
+        😺  root@~ [17:53:07]=> docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            golang              latest              05feda542433        7 days ago          810MB
+            ubuntu              latest              1d622ef86b13        6 weeks ago         73.9MB
+            hello-world         latest              bf756fb1ae65        5 months ago        13.3kB
+            ubuntu              14.04               6e4f1fe62ff1        5 months ago        197MB
+# List full lenth image IDs
+        😺  root@~ [17:53:22]=> docker images --no-trunc
+            REPOSITORY          TAG                 IMAGE ID                                                                  CREATED             SIZE
+            golang              latest              sha256:05feda5424339ab7d14e83dc946c45012f378745bcd43c9eb91c6b5ece5787c3   7 days ago          810MB
+            ubuntu              latest              sha256:1d622ef86b138c7e96d4f797bf5e4baca3249f030c575b9337638594f2b63f01   6 weeks ago         73.9MB
+            hello-world         latest              sha256:bf756fb1ae65adf866bd8c456593cd24beb6a0a061dedf42b26a993176745f6b   5 months ago        13.3kB
+            ubuntu              14.04               sha256:6e4f1fe62ff14a4c8119781d47a3739fa97c190e1df38e868794ad7a7cf50a48   5 months ago        197MB
+
+# List dangling images  
+        😺  root@~ [17:53:22]=> docker image ls --filter dangling=true
+            REPOSITORY 		TAG 			IMAGE ID 			CREATED 			SIZE	
+            <none> 		<none> 		4fd34165afe0 		7 days ago 			14.5MB
+
+A dangling image is an image that is no longer tagged, and appears in listings as <none>:<none>.  Notice we have also applied "filter" option here.
+You can delete all dangling images on a system with the docker image prune command.
+If you add the -a flag, Docker will also remove all unused images (those not in use by any containers, running as well as shutdown).
+
+# Searching Docker Images on Docker hub
+        😹  root@~ [18:01:33]=> docker search nileshjosh1983
+            NAME                        DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+            nileshjoshi1983/webserver                                                   0
+            nileshjoshi/nodejs-webapp   Example containerized webapp built using Nod…   0
+            nileshjoshi1983/pi                                                          0
+            nileshjoshi2799/test        test repo                                       0
+
+        😹  root@~ [18:07:56]=> docker search nginx --filter "is-official=true"
+            NAME                DESCRIPTION                STARS               OFFICIAL            AUTOMATED
+            nginx               Official build of Nginx.   13306               [OK]
+        
+Docker search command will by default display 25 lines of result however that limit can be easily extended using "--limit" flag to maximum 100 lines. 
+
+        😹  root@~ [18:11:06]=> docker search busybox --limit 100
+            NAME                                  DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+            busybox                               Busybox base image.                             1913                [OK]
+            progrium/busybox                                                                      71                                      [OK]
+            radial/busyboxplus                    Full-chain, Internet enabled, busybox made f…   31                                      [OK]
+            jeanblanchard/busybox-java            Minimal Docker image with Java                  22
+            yauritux/busybox-curl                 Busybox with CURL                               8
+            [...50...100]
+
+Some quick formatting example with listing images
+
+        😺  root@~ [18:19:02]=> docker images --format "{{.Repository}} has the following image IDs {{.ID}}"
+            golang has the following image IDs 05feda542433
+            ubuntu has the following image IDs 1d622ef86b13
+            hello-world has the following image IDs bf756fb1ae65
+            ubuntu has the following image IDs 6e4f1fe62ff1
+
+# Inspect the images.  Check the details of image. 
+
+        😿  root@~ [19:04:21]=> docker inspect ubuntu
+            [
+                {
+                    "Id": "sha256:1d622ef86b138c7e96d4f797bf5e4baca3249f030c575b9337638594f2b63f01",
+                    "RepoTags": [
+                        "ubuntu:latest"
+                    ],
+            [...]
+                    "RootFS": {
+                        "Type": "layers",
+                        "Layers": [
+                            "sha256:7789f1a3d4e9258fbe5469a8d657deb6aba168d86967063e9b80ac3e1154333f",
+                            "sha256:9e53fd4895597d04f8871a68caea4c686011e1fbd0be32e57e89ada2ea5c24c4",
+                            "sha256:2a19bd70fcd4ce7fd73b37b1b2c710f8065817a9db821ff839fe0b4b4560e643",
+                            "sha256:8891751e0a1733c5c214d17ad2b0040deccbdea0acebb963679735964d516ac2"
+                        ]
+                    },
+                    "Metadata": {
+                        "LastTagTime": "0001-01-01T00:00:00Z"
+                    }
+                }
+            ]
+
+##########  Container Related Commands
+
+# Launch your first container
+        😺  root@~ [18:25:04]=> docker run -i -t ubuntu:latest
+            root@8ffa1f301204:/# ps -eaf
+            UID        PID  PPID  C STIME TTY          TIME CMD
+            root         1     0  0 18:25 pts/0    00:00:00 /bin/bash
+            root         8     1  0 18:25 pts/0    00:00:00 ps -eaf
+
+Where,
+	-i is short for --interactive. Keep STDIN open even if unattached.
+	-t is short for --tty. Allocates a pseudo terminal that connects your terminal with the container’s STDIN and STDOUT.
+
+NOTE:  As a Unix Admin you're habitual to CTRL+D to come out of shell however if you do this to container \
+       then container will be killed hence use CTRL+p+q key combination to come out of running container. 
+
+# Launching container to just run a program and container will be removed as soon as program executed. 
+    😺  root@~ [18:28:06]=> docker container run --rm golang go version
+        go version go1.14.4 linux/amd64
+
+# List running as well as exited or stopped or killed containers
+    😺  root@~ [18:30:18]=> docker ps
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+        8ffa1f301204        ubuntu:latest       "/bin/bash"         6 minutes ago       Up 6 minutes                            silly_colden
+
+    😺  root@~ [18:31:34]=> docker ps -a
+        CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                         PORTS               NAMES
+        8ffa1f301204        ubuntu:latest       "/bin/bash"              6 minutes ago       Up 6 minutes                                       silly_colden
+        e4b2d0774f53        ubuntu:latest       "/bin/bash"              6 minutes ago       Exited (0) 6 minutes ago                           hungry_galois
+        f8312cc12471        ubuntu:latest       "/bin/bash"              7 minutes ago       Exited (127) 7 minutes ago                         blissful_boyd
+        2186b7ccddbd        hello-world         "/hello"                 46 minutes ago      Exited (0) About an hour ago                       nifty_pascal
+        3dd7b049a08a        71fb597a5129        "docker-entrypoint.s…"   5 hours ago         Exited (137) 3 hours ago                           quirky_babbage
+
+# Attach back to container from where you exited with key sequence CTRL+p+q
+        😺  root@~ [18:31:46]=> docker attach 8ffa1f301204      >>>> You can attach using container ID
+            root@8ffa1f301204:/# 
+
+        😺  root@~ [18:34:00]=> docker attach 8ff       >>>> You can attach using first few unique chars of container ID
+            root@8ffa1f301204:/# 
+
+        😺  root@~ [18:34:16]=> docker attach silly_colden  >>>> You can attach using friendly name given by Docker engine to container. 
+            root@8ffa1f301204:/# 
+
+# What's the use of container ID or names? 
+    Docker engine always provide a container ID and associated friendly name.  
+    This is useful to refer back to a specific container using it's ID or name to perform specific operation like start, attach etc.  
+    You can use your custom unique name to container. 
+
+        😿  root@~ [18:40:06]=> docker run -it --name web_farm1 centos:8
+            Unable to find image 'centos:8' locally     >>>>> Docker check for image locally, if NOT found it goes to image registry to download the image.  If no tag given it downloads the latest version. 
+            8: Pulling from library/centos
+            8a29a15cefae: Pull complete
+            Digest: sha256:fe8d824220415eed5477b63addf40fb06c3b049404242b31982106ac204f6700
+            Status: Downloaded newer image for centos:8
+            [root@f143a9059ae9 /]# 
+
+# Container start/stop 
+
+        😿  root@~ [18:43:33]=> docker stop web_farm1
+            web_farm1
+        😿  root@~ [18:43:38]=> docker start web_farm1
+            web_farm1
+
+# Launch docker in dettached mode (runs container in background)
+        😿  root@~ [18:49:24]=> docker container run -itd ubuntu:14.04
+            c6928eff13ab65fb2626117c863999db33a5933ebf83118cd12581711a9ac451
+Where,
+-d is short for --detach. Run the container in the background. Allows you to use the terminal for other commands while your container runs.
+
+        😿  root@~ [18:50:23]=> docker attach c69
+            root@c6928eff13ab:/#
+
+# Launch containers with name and hostname
+        😿  root@~ [18:55:17]=> docker container run -itd --name c1 --hostname c1.foo.com ubuntu
+            16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100
+        😿  root@~ [18:56:31]=> docker ps
+            CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+            16d916352bfc        ubuntu              "/bin/bash"         23 seconds ago      Up 21 seconds                           c1
+            [...]
+
+# Execute commands within container from outside (from dockerhost)
+
+        😿  root@~ [18:56:53]=> docker exec c1 cat /etc/hosts
+            127.0.0.1       localhost
+            ::1     localhost ip6-localhost ip6-loopback
+            fe00::0 ip6-localnet
+            ff00::0 ip6-mcastprefix
+            ff02::1 ip6-allnodes
+            ff02::2 ip6-allrouters
+            172.17.0.5      c1.foo.com c1
+
+# Run container for a specific time frame
+        😿  root@~ [18:59:23]=> docker run -itd --name c2 --hostname c2.foo.com alpine sleep 60
+            d00b536f8730ceb9073bf12c6dc597b33c092241585c92cdb480774cebe996ed
+
+        😿  root@~ [19:00:00]=> docker ps
+            CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+            d00b536f8730        alpine              "sleep 60"          35 seconds ago      Up 35 seconds                           c2
+        
+        😿  root@~ [19:01:07]=> docker ps -a
+            CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                         PORTS               NAMES
+            d00b536f8730        alpine              "sleep 60"               About a minute ago   Exited (0) 9 seconds ago                           c2
+
+# Inspect the container
+
+        😿  root@~ [19:13:18]=> docker container inspect c1
+            [
+                {
+                    "Id": "16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100",
+                    "Created": "2020-06-09T18:56:30.724969046Z",
+                    "Path": "/bin/bash",
+                    "Args": [],
+                    "State": {
+                        "Status": "running",
+                        "Running": true,
+            [...]
+                    "Image": "sha256:1d622ef86b138c7e96d4f797bf5e4baca3249f030c575b9337638594f2b63f01",
+                    "ResolvConfPath": "/var/lib/docker/containers/16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100/resolv.conf",
+                    "HostnamePath": "/var/lib/docker/containers/16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100/hostname",
+                    "HostsPath": "/var/lib/docker/containers/16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100/hosts",
+                    "LogPath": "/var/lib/docker/containers/16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100/16d916352bfc7e0e337fe87042d8369288ad591b57dc924721caba27bcae9100-json.log",
+                    "Name": "/c1",
+                    "RestartCount": 0,
+                    "Driver": "overlay2",
+                    "Platform": "linux",
+            [...]
+                        "Networks": {
+                            "bridge": {
+                                "IPAMConfig": null,
+                                "Links": null,
+                                "Aliases": null,
+                                "NetworkID": "79aba8bf3295f382b5450cbefa154ba4f5123071c2c9bfd4d20f8ac725bb5984",
+                                "EndpointID": "8e1a1b2f3705adf8d4486a440397d67a50d649171011d92560e633c371e76aa7",
+                                "Gateway": "172.17.0.1",
+                                "IPAddress": "172.17.0.5",
+                                "IPPrefixLen": 16,
+                                "IPv6Gateway": "",
+                                "GlobalIPv6Address": "",
+                                "GlobalIPv6PrefixLen": 0,
+                                "MacAddress": "02:42:ac:11:00:05",
+                                "DriverOpts": null
+                            }
+                        }
+                    }
+                }
+            ]
+
+# To find specific information using inspect and with formatting 
+
+        😿  root@~ [19:24:38]=> docker inspect c1 --format "{{.NetworkSettings.IPAddress}}"
+            172.17.0.5
+
+# Check container logs 
+        😿  root@~ [19:21:08]=> docker logs 3dd7b049a08a
+            Example app listening on port 8080!
+            /GET
+            /GET
+            /GET
+
+# Check logs in runtime 
+
+        😿  root@~ [19:21:17]=> docker logs -f c6928eff13ab
+            root@c6928eff13ab:/#
+
+# Running container with specific Log Driver
+        😿  root@~ [19:28:01]=> docker container run -itd --log-driver journald centos:8
+            e9276d6cde8fa33a54629cedf733576231f44205b9426d6ddac3ce80fc54e12d
+
+        😿  root@~ [19:29:28]=> docker inspect e9276d6 --format "{{.HostConfig.LogConfig.Type}}"
+            journald
+
+# Change default Logging Driver of Docker Engine. 
+
+        😿  root@docker [19:32:23]=> cat << 'EOF' >/etc/docker/daemon.json
+            {
+            "log-driver": "syslog"
+            }
+            EOF
+
+        😿  root@docker [19:33:26]=> systemctl restart docker
+
+BEFORE: 
+
+        😿  root@docker [19:35:04]=> docker info --format '{{.LoggingDriver}}'
+            json-file
+
+AFTER:
+
+        😿  root@docker [19:35:04]=> docker info --format '{{.LoggingDriver}}'
+            syslog
+
+# Login to your Docker Hub Registry using commandline. 
+
+There are couple of ways to login however this is being basic course I'm sharing an easy and moderately secured method. 
+Create a hidden file in users home directory by which you're running all docker commands, restrict the permissions 400 and place your secret passwd there. 
+
+        😿  root@docker [19:35:04]=> cat .mydochubpasswd | docker login -u abc --password-stdin
+            WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+            Configure a credential helper to remove this warning. See
+            https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+            Login Succeeded
+
+# Push your image to docker hub 
+
+        😽  ec2-user@node_project [19:44:03]=> docker push nileshjoshi/mycontainerizedwebapp:latest
+            The push refers to repository [docker.io/nileshjoshi/mycontainerizedwebapp]
+            c7022b88af6c: Pushed
+            338919fab75a: Pushed
+            2552e59fea97: Pushed
+            0f055e7330dc: Pushed
+            3cf0895e4153: Mounted from library/node
+            20c7ba83dbc3: Mounted from library/node
+            4a5be4bf818c: Mounted from library/node
+            3e207b409db3: Mounted from library/node
+            latest: digest: sha256:57f2bb3e811f1433e6e95c1d31ffd072398288dbabc15cf50216ddd777614ca8 size: 1992
+
+# Clean up your environment 
+# List, Stop and Remove all containers
+
+        😾  root@~ [19:46:55]=> docker container ls -a -q
+            e9276d6cde8f
+            71f4868253bc
+            db340a2ca28b
+            d00b536f8730
+            16d916352bfc
+            c6928eff13ab
+            585855a38bb6
+            dbf96e693b37
+            f143a9059ae9
+            8ffa1f301204
+            e4b2d0774f53
+            f8312cc12471
+            2186b7ccddbd
+            3dd7b049a08a
+
+        😾  root@~ [19:47:09]=> docker container stop $(docker container ls -qa)
+            e9276d6cde8f
+            71f4868253bc
+            db340a2ca28b
+            d00b536f8730
+            16d916352bfc
+            c6928eff13ab
+            585855a38bb6
+            dbf96e693b37
+            f143a9059ae9
+            8ffa1f301204
+            e4b2d0774f53
+            f8312cc12471
+            2186b7ccddbd
+            3dd7b049a08a
+
+        😾  root@~ [19:47:54]=> docker ps
+            CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+        😾  root@~ [19:48:05]=> docker container rm $(docker container ls -qa)
+            e9276d6cde8f
+            71f4868253bc
+            db340a2ca28b
+            d00b536f8730
+            16d916352bfc
+            c6928eff13ab
+            585855a38bb6
+            dbf96e693b37
+            f143a9059ae9
+            8ffa1f301204
+            e4b2d0774f53
+            f8312cc12471
+            2186b7ccddbd
+            3dd7b049a08a
+
+        😾  root@~ [19:48:33]=> docker ps -a
+            CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+# Remove / Delete all your images 
+
+        😾  root@~ [19:49:59]=> docker rmi $(docker images -q)
+            Untagged: nileshjoshi/mycontainerizedwebapp:latest
+            Untagged: nileshjoshi/mycontainerizedwebapp@sha256:57f2bb3e811f1433e6e95c1d31ffd072398288dbabc15cf50216ddd777614ca8
+            Deleted: sha256:f9fae2d7467e50e997ac19ffa7f85fb63e56f6e08d5748a59063098aa9b1f364
+            Deleted: sha256:3682bf39607ccb181d0d172c4263e97b6b48cd525b7bfacf5a008561e1b8f6ea
+            Deleted: sha256:733082521e7144f139972e9bb2d3f718de57146a340cd33041f25ed49801bb39
+            [...]
+            Deleted: sha256:bf1b2d677f21703e5be92de8b094fbf5cceeea666885053b40b8a5b2f20638b3
+            Deleted: sha256:9b22c82c6d5a884491639891b0eb053e6e58d6da35ad2d73655d7dd2707d6d73
+            Deleted: sha256:f2fa9f4cf8fd0a521d40e34492b522cee3f35004047e617c75fadeb8bfd1e6b7
+        😾  root@~ [19:50:21]=>
+
+        😾  root@~ [19:51:04]=> docker images ls -a
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
