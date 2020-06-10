@@ -365,6 +365,8 @@ AFTER:
 
         😿  root@docker [19:35:04]=> docker info --format '{{.LoggingDriver}}'
             syslog
+	    
+NOTE: If you change the storage driver on an already-running Docker host, existing images and containers will not be available after Docker is restarted. If you need to change your storage driver, and you need your images and containers to be available after the change, you need to save them with docker save, push the saved images to a repo, change the storage driver, restart Docker, pull the images locally, and restart your containers.
 
 # Login to your Docker Hub Registry using commandline. 
 
